@@ -25,14 +25,9 @@ class Method_MLP(method, nn.Module):
     def __init__(self, mName, mDescription):
         method.__init__(self, mName, mDescription)
         nn.Module.__init__(self)
-        # check here for nn.Linear doc: https://pytorch.org/docs/stable/generated/torch.nn.Linear.html
-        self.fc_layer_1 = nn.Linear(784, 69)
-        # check here for nn.ReLU doc: https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html
+        self.fc_layer_1 = nn.Linear(784, 200)
         self.activation_func_1 = nn.ReLU()
-        self.fc_layer_2 = nn.Linear(69, 10)
-        # self.activation_func_2 = nn.ReLU()
-        # self.fc_layer_3 = nn.Linear(20, 10)
-        # check here for nn.Softmax doc: https://pytorch.org/docs/stable/generated/torch.nn.Softmax.html
+        self.fc_layer_2 = nn.Linear(200, 10)
         self.activation_func_2 = nn.Softmax(dim=1)
         self.losses = []
 
@@ -42,9 +37,8 @@ class Method_MLP(method, nn.Module):
     def forward(self, x):
         '''Forward propagation'''
         # hidden layer embeddings
-        x = x / 255.0
+        # x = x / 255.0
         h1 = self.activation_func_1(self.fc_layer_1(x))
-        # h2 = self.activation_func_2(self.fc_layer_2(h1))
         y_pred = self.activation_func_2(self.fc_layer_2(h1))
         return y_pred
 
@@ -53,7 +47,7 @@ class Method_MLP(method, nn.Module):
 
     def train(self, X, y):
         # check here for the torch.optim doc: https://pytorch.org/docs/stable/optim.html
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        optimizer = torch.optim.AdamW(self.parameters(), lr=self.learning_rate)
         # check here for the nn.CrossEntropyLoss doc: https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html
         loss_function = nn.CrossEntropyLoss()
         # for training accuracy investigation purpose
@@ -69,7 +63,7 @@ class Method_MLP(method, nn.Module):
                 y_true = torch.LongTensor(np.array(y_batch))
 
                 # calculate the training loss
-                train_loss = loss_function(y_pred, y_true) #+ 1e-6 * (torch.norm(self.fc_layer_1.weight, 2) + torch.norm(self.fc_layer_2.weight, 2))
+                train_loss = loss_function(y_pred, y_true) + 1e-4 * (torch.norm(self.fc_layer_1.weight, 2) + torch.norm(self.fc_layer_2.weight, 2))
                 # print('epoch: ' + str(epoch) + ' loss: ' + str(train_loss))
                 if id_batch == dataloader.batch_size - 1:
                     self.losses.append(train_loss.item())
@@ -78,8 +72,8 @@ class Method_MLP(method, nn.Module):
                 train_loss.backward()
                 optimizer.step()
 
-                if id_batch%10 == 0:
-                    accuracy_evaluator.data = {'true_y': y_true, 'pred_y': y_pred.max(1)[1]}
+                if id_batch%20 == 0:
+                    accuracy_evaluator.data = {'true_y': y_true.cpu(), 'pred_y': y_pred.max(1)[1].cpu()}
                     print('Epoch:', epoch, 'Accuracy:', accuracy_evaluator.evaluate(), 'Loss:', train_loss.item())
     
     def test(self, X):
