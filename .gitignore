@@ -73,3 +73,7 @@ db.sqlite3
 
 # Ignore data folders
 data/
+
+result/stage_4_result/embedding.pkl
+result/stage_4_result/generation_model.pth
+result/stage_4_result/vocab.pkl

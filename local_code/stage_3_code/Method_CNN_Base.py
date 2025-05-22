@@ -1,4 +1,4 @@
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader, TensorDataset, Dataset
 from local_code.base_class.method import method
 import torch
 from torch import nn
