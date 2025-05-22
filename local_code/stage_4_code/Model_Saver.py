@@ -14,7 +14,7 @@ class Model_Saver(result):
     def save(self):
         print('saving model...')
         torch.save(self.state_dict, self.result_destination_folder_path + self.result_destination_file_name)
-        with open(self.result_destination_folder_path + 'vocab.pkl', 'wb') as f:
+        with open(self.result_destination_folder_path + 'lstm_vocab.pkl', 'wb') as f:
             pickle.dump(self.vocab, f)
-        with open(self.result_destination_folder_path + 'embedding.pkl', 'wb') as f:
+        with open(self.result_destination_folder_path + 'lstm_embedding.pkl', 'wb') as f:
             pickle.dump(self.embedding, f)

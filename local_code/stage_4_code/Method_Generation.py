@@ -26,12 +26,12 @@ class Method_Generation(method, nn.Module):
 
     def build(self):
         self.embedding = self.data["embedding"]
-        self.rnn = nn.RNN(self.embedding.embedding_dim, 256, batch_first=True)
+        self.rnn = nn.GRU(self.embedding.embedding_dim, 256, batch_first=True)
         self.fc1 = nn.Linear(256, len(self.data["vocab"]))
 
     def forward(self, x):
         embedded = self.embedding(x)
-        output, hidden = self.rnn(embedded)
+        output, (hidden, _) = self.rnn(embedded)
 
         hidden = hidden.squeeze(0)
         return self.fc1(hidden)

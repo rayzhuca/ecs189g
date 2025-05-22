@@ -5,9 +5,9 @@ import torch
 from local_code.stage_4_code.Dataset_Loader_Generation import Dataset_Loader_Generation
 from local_code.stage_4_code.Method_Generation import Method_Generation
 
-model_file_path = '../../result/stage_4_result/generation_model.pth'
-vocab_file_path = '../../result/stage_4_result/vocab.pkl'
-embedding_file_path = '../../result/stage_4_result/embedding.pkl'
+model_file_path = '../../result/stage_4_result/gru_generation_model.pth'
+vocab_file_path = '../../result/stage_4_result/gru_vocab.pkl'
+embedding_file_path = '../../result/stage_4_result/gru_embedding.pkl'
 
 
 if __name__ == '__main__':

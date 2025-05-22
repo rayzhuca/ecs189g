@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     result_obj = Model_Saver('saver', '')
     result_obj.result_destination_folder_path = '../../result/stage_4_result/'
-    result_obj.result_destination_file_name = 'generation_model.pth'
+    result_obj.result_destination_file_name = 'lstm_generation_model.pth'
 
     evaluate_obj = Evaluate_Accuracy('accuracy', 'macro f1, recall, precision, and accuracy')
 
